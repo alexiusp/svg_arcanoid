@@ -1,0 +1,21 @@
+import { Action } from 'redux';
+
+export const APP_START = 'APP_START';
+export type APP_START = typeof APP_START;
+export interface IAppStartAction extends Action<APP_START> {
+  type: APP_START;
+}
+
+export const APP_STARTED = 'APP_STARTED';
+export type APP_STARTED = typeof APP_STARTED;
+export interface IAppStartedAction extends Action<APP_STARTED> {
+  type: APP_STARTED;
+}
+
+export const APP_STOP = 'APP_STOP';
+export type APP_STOP = typeof APP_STOP;
+export interface IAppStopAction extends Action<APP_STOP> {
+  type: APP_STOP;
+}
+
+export type IActions = IAppStartAction | IAppStartedAction | IAppStopAction;

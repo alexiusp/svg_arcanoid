@@ -1,0 +1,15 @@
+.root {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.root svg {
+  height: 400px;
+  width: 400px;
+  flex: 0 0 auto;
+  border: 1px solid greenyellow;
+}
