@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 import * as Selectors from './selectors';
-import { connect } from 'react-redux';
 
 export interface ICaretProps {
   x: number;

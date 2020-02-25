@@ -12,6 +12,20 @@ export interface ICaretRightAction extends Action<CARET_RIGHT> {
   type: CARET_RIGHT;
 }
 
+export const CARET_SPEED = 'CARET_SPEED';
+export type CARET_SPEED = typeof CARET_SPEED;
+export interface IUpdateSpeedAction extends Action<CARET_SPEED> {
+  type: CARET_SPEED;
+  speed: number;
+}
+
+export const CARET_POSITION = 'CARET_POSITION';
+export type CARET_POSITION = typeof CARET_POSITION;
+export interface IUpdatePositionAction extends Action<CARET_POSITION> {
+  type: CARET_POSITION;
+  x: number;
+}
+
 export const CARET_UPDATE = 'CARET_UPDATE';
 export type CARET_UPDATE = typeof CARET_UPDATE;
 export interface ICaretUpdateAction extends Action<CARET_UPDATE> {
@@ -27,5 +41,7 @@ export interface ICaretResetAction extends Action<CARET_RESET> {
 export type IActions =
   | ICaretLeftAction
   | ICaretRightAction
+  | IUpdateSpeedAction
+  | IUpdatePositionAction
   | ICaretUpdateAction
   | ICaretResetAction;

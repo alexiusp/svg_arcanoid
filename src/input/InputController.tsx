@@ -14,7 +14,7 @@ export interface IRootProps {
 export const InputController: React.FC<IRootProps> = ({ running, onKeyLeft, onKeyRight }) => {
   React.useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
-      console.log('keyDownHandler', e);
+      // console.log('keyDownHandler', e);
       switch (e.code) {
         case 'ArrowLeft':
           onKeyLeft();

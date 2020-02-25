@@ -26,3 +26,5 @@ export const getYPos = (state: IState) => getFeatureState(state).y;
 export const getWidth = (state: IState) => getFeatureState(state).width;
 
 export const getHeight = (state: IState) => getFeatureState(state).height;
+
+export const getSpeed = (state: IState) => getFeatureState(state).speed;

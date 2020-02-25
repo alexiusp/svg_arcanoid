@@ -5,24 +5,27 @@ export interface IFeatureState {
 }
 
 export const initialState: IFeatureState = {
-  running: false,
+  running: false
 };
 
 export const statePropName = 'app';
 
-export default function appReducer(state: IFeatureState = initialState, action: ActionTypes.IActions): IFeatureState {
+export default function appReducer(
+  state: IFeatureState = initialState,
+  action: ActionTypes.IActions
+): IFeatureState {
   switch (action.type) {
     case ActionTypes.APP_STARTED:
       return {
-        ...initialState,
-        running: true,
+        ...state,
+        running: true
       };
-      case ActionTypes.APP_STOP:
-        return {
-          ...initialState,
-          running: false,
-        };
-      default:
+    case ActionTypes.APP_STOP:
+      return {
+        ...state,
+        running: false
+      };
+    default:
       return state;
   }
 }

@@ -2,26 +2,28 @@ import { ActionCreator } from 'redux';
 
 import * as ActionTypes from './actionTypes';
 
-export const moveLeftAction: ActionCreator<ActionTypes.ICaretLeftAction> = () => {
-  return {
-    type: ActionTypes.CARET_LEFT,
-  };
-};
+export const moveLeftAction: ActionCreator<ActionTypes.ICaretLeftAction> = () => ({
+  type: ActionTypes.CARET_LEFT,
+});
 
-export const moveRightAction: ActionCreator<ActionTypes.ICaretRightAction> = () => {
-  return {
-    type: ActionTypes.CARET_RIGHT,
-  };
-};
+export const moveRightAction: ActionCreator<ActionTypes.ICaretRightAction> = () => ({
+  type: ActionTypes.CARET_RIGHT,
+});
 
-export const updateAction: ActionCreator<ActionTypes.ICaretUpdateAction> = () => {
-  return {
-    type: ActionTypes.CARET_UPDATE,
-  };
-};
+export const updateSpeedAction: ActionCreator<ActionTypes.IUpdateSpeedAction> = (speed: number) => ({
+  type: ActionTypes.CARET_SPEED,
+  speed,
+});
 
-export const resetAction: ActionCreator<ActionTypes.ICaretResetAction> = () => {
-  return {
-    type: ActionTypes.CARET_RESET,
-  };
-};
+export const updatePositionAction: ActionCreator<ActionTypes.IUpdatePositionAction> = (x: number) => ({
+  type: ActionTypes.CARET_POSITION,
+  x,
+});
+
+export const updateAction: ActionCreator<ActionTypes.ICaretUpdateAction> = () => ({
+  type: ActionTypes.CARET_UPDATE,
+});
+
+export const resetAction: ActionCreator<ActionTypes.ICaretResetAction> = () => ({
+  type: ActionTypes.CARET_RESET,
+});

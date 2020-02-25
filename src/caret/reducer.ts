@@ -1,5 +1,5 @@
 import * as ActionTypes from './actionTypes';
-import CaretModel from './CaretModel';
+import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
 
 export interface IFeatureState {
   speed: number;
@@ -9,12 +9,17 @@ export interface IFeatureState {
   height: number;
 }
 
+const caretWidth = 120;
+const caretHeight = 20;
+const caretPosX = (VIEW_WIDTH - caretWidth) / 2;
+const caretPosY = VIEW_HEIGHT - caretHeight;
+
 export const initialState: IFeatureState = {
   speed: 0,
-  x: CaretModel.x,
-  y: CaretModel.y,
-  width: CaretModel.width,
-  height: CaretModel.height,
+  x: caretPosX,
+  y: caretPosY,
+  width: caretWidth,
+  height: caretHeight,
 };
 
 export const statePropName = 'caret';
@@ -24,26 +29,21 @@ export default function reducer(
   action: ActionTypes.IActions
 ): IFeatureState {
   switch (action.type) {
-    case ActionTypes.CARET_LEFT: {
+    case ActionTypes.CARET_POSITION: {
+      const x = action.x;
       return {
         ...state,
-        speed: CaretModel.moveLeft(),
+        x,
       };
     }
-    case ActionTypes.CARET_RIGHT: {
+    case ActionTypes.CARET_SPEED: {
+      const speed = action.speed;
       return {
         ...state,
-        speed: CaretModel.moveRight(),
-      };
-    }
-    case ActionTypes.CARET_UPDATE: {
-      return {
-        ...state,
-        x: CaretModel.updateX(),
+        speed,
       };
     }
     case ActionTypes.CARET_RESET: {
-      CaretModel.reset();
       return {
         ...initialState,
       };

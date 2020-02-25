@@ -5,11 +5,16 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background-color: darkgray;
 }
 
 .root svg {
-  height: 400px;
-  width: 400px;
+  height: 480px;
+  width: 480px;
   flex: 0 0 auto;
-  border: 1px solid greenyellow;
+  background-color: white;
+}
+
+.root button {
+  margin: 20px;
 }

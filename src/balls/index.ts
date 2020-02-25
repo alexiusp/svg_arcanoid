@@ -1,8 +1,10 @@
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
 import reducer, { initialState, statePropName } from './reducer';
-import Caret from './Caret';
+import Ball from './Ball';
+import BallsLayer from './BallsLayer';
 import Saga from './saga';
+// import { IBallModel } from './BallModel';
 import * as Selectors from './selectors';
 
 export {
@@ -12,6 +14,8 @@ export {
   initialState,
   statePropName,
   Selectors,
-  Caret,
   Saga,
+  Ball,
+  BallsLayer,
+//  BallModel,
 };

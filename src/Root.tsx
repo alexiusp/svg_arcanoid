@@ -7,6 +7,7 @@ import { VIEW_WIDTH, VIEW_HEIGHT } from './constants';
 import { RootState } from './store';
 
 import { Caret } from './caret';
+import { BallsLayer } from './balls';
 
 export interface IRootProps {
   running: boolean;
@@ -18,6 +19,7 @@ export const Root: React.FC<IRootProps> = ({ running, onStart }) => {
   return (
     <div className="root">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}>
+        <BallsLayer />
         <Caret />
       </svg>
       <button onClick={startHandler}>{ running ? 'Stop' : 'Start' }</button>
