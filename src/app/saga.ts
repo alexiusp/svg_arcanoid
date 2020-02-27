@@ -1,4 +1,4 @@
-import { all, delay, fork, put, select, takeLatest } from 'redux-saga/effects';
+import { all, cancel, delay, fork, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
@@ -10,11 +10,20 @@ const GAME_TICK = 100;
 
 function* kickBallSaga() {
   // wait one tick
-  // yield delay(GAME_TICK);
+  yield delay(GAME_TICK);
   yield put(BallsActions.kickBallAction(0));
 }
 
 function* gameCycleSaga() {
+  while(true) {
+    // update caret position
+    yield put(CaretActions.updateAction());
+    yield put(BallsActions.updateAction());
+    yield delay(GAME_TICK);
+  }
+}
+
+function* startGameSaga() {
   const running = yield select(Selectors.isRunning);
   if (running) {
     yield put(Actions.stopAppAction());
@@ -24,16 +33,13 @@ function* gameCycleSaga() {
   yield put(CaretActions.resetAction());
   yield put(BallsActions.initBallAction());
   yield fork(kickBallSaga);
-  while(true) {
-    // update caret position
-    yield delay(GAME_TICK);
-    yield put(CaretActions.updateAction());
-    yield put(BallsActions.updateAction());
-  }
+  const gameCycle = yield fork(gameCycleSaga);
+  yield take(ActionTypes.APP_STOP);
+  yield cancel(gameCycle);
 }
 
 export default function* watchApp() {
   yield all([
-    takeLatest(ActionTypes.APP_START, gameCycleSaga),
+    takeLatest(ActionTypes.APP_START, startGameSaga),
   ]);
 }

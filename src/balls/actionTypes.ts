@@ -35,9 +35,25 @@ export interface IKickBallAction extends Action<BALL_KICK> {
   index: number;
 }
 
+export const BALL_HIT_FLOOR = 'BALL_HIT_FLOOR';
+export type BALL_HIT_FLOOR = typeof BALL_HIT_FLOOR;
+export interface IBallHitFloorAction extends Action<BALL_HIT_FLOOR> {
+  type: BALL_HIT_FLOOR;
+  index: number;
+}
+
+export const BALL_REMOVE = 'BALL_REMOVE';
+export type BALL_REMOVE = typeof BALL_REMOVE;
+export interface IRemoveBallAction extends Action<BALL_REMOVE> {
+  type: BALL_REMOVE;
+  index: number;
+}
+
 export type IActions =
   | IInitBallAction
   | IAddBallAction
   | IUpdateBallAction
   | IUpdateAllBallsAction
-  | IKickBallAction;
+  | IKickBallAction
+  | IBallHitFloorAction
+  | IRemoveBallAction;

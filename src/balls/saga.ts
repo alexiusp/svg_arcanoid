@@ -1,11 +1,12 @@
-import { all, put, select, takeLatest } from 'redux-saga/effects';
+import { all, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import { Selectors as CaretSelectors } from '../caret';
+import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
+import { Actions as AppActions } from '../app';
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import { IBallModel } from './types';
-import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
 
 const DefaultBallRadius = 10;
 const SPEED_STEP = 5;
@@ -33,18 +34,18 @@ function* updateBallsSaga() {
     let posY = ball.y + ball.vy * SPEED_STEP;
     let newVX = ball.vx;
     let newVY = ball.vy;
-    console.log('ball;', posX, posY, newVX, newVY);
     // resolve edge collisions
+    // Detect collision with floor.
+    if (posY + ball.r > VIEW_HEIGHT) {
+      newVX = 0;
+      newVY = 0;
+      yield put(Actions.ballHitFloorAction(index));
+    }
     // Detect collision with right wall.
-    if (posX + ball.r > VIEW_WIDTH) {
+    else if (posX + ball.r > VIEW_WIDTH) {
       // Need to know how much we overshot the canvas width so we know how far to 'bounce'.
       posX = VIEW_WIDTH - ball.r;
       newVX = -newVX;
-    }
-    // Detect collision with bottom wall.
-    else if (posY + ball.r > VIEW_HEIGHT) {
-      posY = VIEW_HEIGHT - ball.r;
-      newVY = -newVY;
     }
     // Detect collision with left wall.
     else if (posX - ball.r < 0) {
@@ -56,7 +57,6 @@ function* updateBallsSaga() {
       posY = ball.r;
       newVY = -newVY;
     }
-    console.log('ball updated:', posX, posY, newVX, newVY);
     // TODO: resolve objects collisions
     const newBall: IBallModel = {
       ...ball,
@@ -82,10 +82,21 @@ function* kickBallSaga({ index }: ActionTypes.IKickBallAction) {
   yield put(Actions.updateBallAction(index, newBall));
 }
 
+function* handleFloorCollision({ index }: ActionTypes.IBallHitFloorAction) {
+  // if last ball - stop the game
+  // TODO: implement proper game over action
+  const amount = yield select(Selectors.getAmountOfBalls);
+  if (amount === 1) {
+    yield put(AppActions.stopAppAction());
+  }
+  yield put(Actions.removeBallAction(index));
+}
+
 export default function* watchBalls() {
   yield all([
     takeLatest(ActionTypes.BALL_INIT, initBallSaga),
     takeLatest(ActionTypes.BALLS_UPDATE, updateBallsSaga),
     takeLatest(ActionTypes.BALL_KICK, kickBallSaga),
+    takeEvery(ActionTypes.BALL_HIT_FLOOR, handleFloorCollision),
   ]);
 }

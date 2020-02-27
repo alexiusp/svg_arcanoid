@@ -26,3 +26,13 @@ export const kickBallAction: ActionCreator<ActionTypes.IKickBallAction> = (index
   type: ActionTypes.BALL_KICK,
   index,
 });
+
+export const ballHitFloorAction: ActionCreator<ActionTypes.IBallHitFloorAction> = (index: number) => ({
+  type: ActionTypes.BALL_HIT_FLOOR,
+  index,
+});
+
+export const removeBallAction: ActionCreator<ActionTypes.IRemoveBallAction> = (index: number) => ({
+  type: ActionTypes.BALL_REMOVE,
+  index,
+});

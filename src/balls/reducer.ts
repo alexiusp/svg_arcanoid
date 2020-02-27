@@ -32,6 +32,15 @@ export default function reducer(
         balls,
       };
     }
+    case ActionTypes.BALL_REMOVE: {
+      const index = action.index;
+      const balls = [...state.balls];
+      balls.splice(index, 1);
+      return {
+        ...state,
+        balls,
+      };
+    }
     default:
       return state;
   }

@@ -11,4 +11,6 @@ const getFeatureState = (state: IState) => state[statePropName];
 
 export const getBalls = (state: IState) => getFeatureState(state).balls;
 
+export const getAmountOfBalls = (state: IState) => getBalls(state).length;
+
 export const getBall = (state: IState, index: number) => getBalls(state)[index];
