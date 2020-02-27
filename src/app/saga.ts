@@ -31,6 +31,7 @@ function* startGameSaga() {
   }
   yield put(Actions.appStartedAction());
   yield put(CaretActions.resetAction());
+  yield put(BallsActions.resetBallsAction());
   yield put(BallsActions.initBallAction());
   yield fork(kickBallSaga);
   const gameCycle = yield fork(gameCycleSaga);

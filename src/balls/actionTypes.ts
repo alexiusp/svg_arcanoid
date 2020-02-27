@@ -49,6 +49,12 @@ export interface IRemoveBallAction extends Action<BALL_REMOVE> {
   index: number;
 }
 
+export const BALLS_RESET = 'BALLS_RESET';
+export type BALLS_RESET = typeof BALLS_RESET;
+export interface IResetBallsAction extends Action<BALLS_RESET> {
+  type: BALLS_RESET;
+}
+
 export type IActions =
   | IInitBallAction
   | IAddBallAction
@@ -56,4 +62,5 @@ export type IActions =
   | IUpdateAllBallsAction
   | IKickBallAction
   | IBallHitFloorAction
-  | IRemoveBallAction;
+  | IRemoveBallAction
+  | IResetBallsAction;

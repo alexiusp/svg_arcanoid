@@ -34,6 +34,7 @@ function* updateBallsSaga() {
     let posY = ball.y + ball.vy * SPEED_STEP;
     let newVX = ball.vx;
     let newVY = ball.vy;
+    // TODO: resolve objects collisions
     // resolve edge collisions
     // Detect collision with floor.
     if (posY + ball.r > VIEW_HEIGHT) {
@@ -57,7 +58,6 @@ function* updateBallsSaga() {
       posY = ball.r;
       newVY = -newVY;
     }
-    // TODO: resolve objects collisions
     const newBall: IBallModel = {
       ...ball,
       x: posX,

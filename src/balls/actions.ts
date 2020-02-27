@@ -36,3 +36,7 @@ export const removeBallAction: ActionCreator<ActionTypes.IRemoveBallAction> = (i
   type: ActionTypes.BALL_REMOVE,
   index,
 });
+
+export const resetBallsAction: ActionCreator<ActionTypes.IResetBallsAction> = () => ({
+  type: ActionTypes.BALLS_RESET,
+});

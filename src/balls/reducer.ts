@@ -16,6 +16,12 @@ export default function reducer(
   action: ActionTypes.IActions
 ): IFeatureState {
   switch (action.type) {
+    case ActionTypes.BALLS_RESET: {
+      return {
+        ...state,
+        balls: [],
+      }
+    }
     case ActionTypes.BALL_ADD: {
       const balls = [...state.balls, action.ball];
       return {

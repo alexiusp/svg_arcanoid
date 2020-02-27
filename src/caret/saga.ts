@@ -30,9 +30,15 @@ function* moveCaretRightSaga() {
 
 function* updateCaretSaga() {
   const oldXPos = yield select(Selectors.getXPos);
-  const speed = yield select(Selectors.getSpeed);
-  const newXPos = oldXPos + speed * SPEED_STEP;
-  const x = Math.max(0, Math.min(newXPos, VIEW_WIDTH));
+  let speed = yield select(Selectors.getSpeed);
+  const caretWidth = yield select(Selectors.getWidth);
+  let x = oldXPos + speed * SPEED_STEP;
+  // detect wall collisions
+  if (x < 0 || x > VIEW_WIDTH - caretWidth) {
+    x = Math.max(0, Math.min(x, VIEW_WIDTH - caretWidth));
+    speed = 0;
+    yield put(Actions.updateSpeedAction(speed));
+  }
   yield put(Actions.updatePositionAction(x));
 }
 
