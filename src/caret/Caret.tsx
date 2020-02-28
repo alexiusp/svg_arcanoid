@@ -16,6 +16,6 @@ const Caret: React.FC<ICaretProps> = ({ x, y, width, height }) => {
   );
 }
 
-export const mapStateToProps = Selectors.getCaretProps;
+export const mapStateToProps = Selectors.getCaretModel;
 
 export default connect(mapStateToProps)(Caret);

@@ -9,13 +9,10 @@ export interface IState {
 
 const getFeatureState = (state: IState) => state[statePropName];
 
-export const getCaretProps = (state: IState) => {
+export const getCaretModel = (state: IState) => {
   const caret = getFeatureState(state);
   return {
-    x: caret.x,
-    y: caret.y,
-    width: caret.width,
-    height: caret.height,
+    ...caret,
   };
 };
 

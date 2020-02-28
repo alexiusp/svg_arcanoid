@@ -1,13 +1,8 @@
-import * as ActionTypes from './actionTypes';
 import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
+import * as ActionTypes from './actionTypes';
+import { ICaretModel } from './types';
 
-export interface IFeatureState {
-  speed: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+export type IFeatureState = ICaretModel;
 
 const caretWidth = 120;
 const caretHeight = 20;

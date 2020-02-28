@@ -1,4 +1,4 @@
-import { all, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import { Selectors as CaretSelectors } from '../caret';
 import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
@@ -7,10 +7,12 @@ import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import { IBallModel } from './types';
+import { ICaretModel } from '../caret/types';
 
 const DefaultBallRadius = 10;
 const SPEED_STEP = 5;
 const StartBallSpeed = 3;
+const IMPULSE_RATIO = 1;
 
 function* initBallSaga() {
   // calculate default ball position on top right corner of the caret
@@ -25,6 +27,46 @@ function* initBallSaga() {
   yield put(Actions.addBallAction(ball));
 }
 
+function lengthSqr(x1: number, y1: number, x2: number, y2: number) {
+  return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2);
+}
+
+function* detectCollision(x: number, y: number, r: number) {
+  // detect if ball collide with caret
+  const caret: ICaretModel = yield select(CaretSelectors.getCaretModel);
+  const isLeft = x <= caret.x;
+  const isRight = x >= caret.x + caret.width;
+  const isTop = y <= caret.y;
+  const isBottom = y >= caret.y + caret.height;
+  if (isLeft && isTop) {
+    // left-top corner
+    return lengthSqr(x, y, caret.x, caret.y) <= Math.pow(r, 2);
+  } else if (isLeft && isBottom) {
+    // left-bottom corner
+    return lengthSqr(x, y, caret.x, caret.y + caret.height) <= Math.pow(r, 2);
+  } else if (isLeft) {
+    // left side
+    return caret.x - x <= r;
+  } else if (isRight && isBottom) {
+    // right-bottom corner
+    return lengthSqr(x, y, caret.x + caret.width, caret.y + caret.height) <= Math.pow(r, 2);
+  } else if (isBottom) {
+    // bottom side
+    return y - caret.y + caret.height <= r;
+  } else if (isRight && isTop) {
+    // right-top corner
+    return lengthSqr(x, y, caret.x + caret.width, caret.y) <= Math.pow(r, 2);
+  } else if (isRight) {
+    // right side
+    return x - caret.x + caret.width <= r;
+  } else if (isTop) {
+    // top side
+    return caret.y - y <= r;
+  }
+  // inside
+  return true;
+}
+
 function* updateBallsSaga() {
   const balls: IBallModel[] = yield select(Selectors.getBalls);
   for (let index = 0; index < balls.length; index++) {
@@ -35,28 +77,36 @@ function* updateBallsSaga() {
     let newVX = ball.vx;
     let newVY = ball.vy;
     // TODO: resolve objects collisions
-    // resolve edge collisions
-    // Detect collision with floor.
-    if (posY + ball.r > VIEW_HEIGHT) {
-      newVX = 0;
-      newVY = 0;
-      yield put(Actions.ballHitFloorAction(index));
-    }
-    // Detect collision with right wall.
-    else if (posX + ball.r > VIEW_WIDTH) {
-      // Need to know how much we overshot the canvas width so we know how far to 'bounce'.
-      posX = VIEW_WIDTH - ball.r;
-      newVX = -newVX;
-    }
-    // Detect collision with left wall.
-    else if (posX - ball.r < 0) {
-      posX = ball.r;
-      newVX = -newVX;
-    }
-    // Detect collision with top wall.
-    else if (posY - ball.r < 0) {
-      posY = ball.r;
+    const collideWithCaret = yield call(detectCollision, posX, posY, ball.r);
+    if (collideWithCaret) {
+      const caret: ICaretModel = yield select(CaretSelectors.getCaretModel);
+      // does not matter wich side of caret collide
       newVY = -newVY;
+      newVX += caret.speed * IMPULSE_RATIO;
+    } else {
+      // resolve edge collisions
+      // Detect collision with floor.
+      if (posY + ball.r > VIEW_HEIGHT) {
+        newVX = 0;
+        newVY = 0;
+        yield put(Actions.ballHitFloorAction(index));
+      }
+      // Detect collision with right wall.
+      else if (posX + ball.r > VIEW_WIDTH) {
+        // Need to know how much we overshot the canvas width so we know how far to 'bounce'.
+        posX = VIEW_WIDTH - ball.r;
+        newVX = -newVX;
+      }
+      // Detect collision with left wall.
+      else if (posX - ball.r < 0) {
+        posX = ball.r;
+        newVX = -newVX;
+      }
+      // Detect collision with top wall.
+      else if (posY - ball.r < 0) {
+        posY = ball.r;
+        newVY = -newVY;
+      }
     }
     const newBall: IBallModel = {
       ...ball,
