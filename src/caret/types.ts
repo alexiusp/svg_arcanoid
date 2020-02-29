@@ -1,7 +1,5 @@
-import { IPosition } from '../types';
+import { IRect } from '../types';
 
-export interface ICaretModel extends IPosition {
+export interface ICaretModel extends IRect {
   speed: number;
-  width: number;
-  height: number;
 }

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import styles from './Caret.module.css';
+
 import * as Selectors from './selectors';
 
 export interface ICaretProps {
@@ -12,7 +14,7 @@ export interface ICaretProps {
 
 const Caret: React.FC<ICaretProps> = ({ x, y, width, height }) => {
   return (
-    <rect x={x} y={y} width={width} height={height} />
+    <rect className={styles.caret} x={x} y={y} width={width} height={height} />
   );
 }
 

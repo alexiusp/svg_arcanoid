@@ -3,6 +3,7 @@ export interface IPosition {
   y: number;
 }
 
-export interface IModel {
-  update: () => void;
+export interface IRect extends IPosition {
+  width: number;
+  height: number;
 }

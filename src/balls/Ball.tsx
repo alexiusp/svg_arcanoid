@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import styles from './Ball.module.css';
+
 interface IBallProps {
   x: number;
   y: number;
@@ -8,7 +10,7 @@ interface IBallProps {
 
 const Ball: React.FC<IBallProps> = ({ r, x, y }) => {
   return (
-    <circle cx={x} cy={y} r={r} />
+    <circle className={styles.ball} cx={x} cy={y} r={r} />
   );
 }
 export default Ball;

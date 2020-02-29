@@ -26,7 +26,7 @@ export const InputController: React.FC<IRootProps> = ({ running, onKeyLeft, onKe
           break;
       }
     };
-    const keyUpHandler = (e: KeyboardEvent) => console.log('keyUpHandler', e);
+    const keyUpHandler = (e: KeyboardEvent) => null;//console.log('keyUpHandler', e);
     const cleanup = () => {
       document.removeEventListener('keydown', keyDownHandler);
       document.removeEventListener('keyup', keyUpHandler);
