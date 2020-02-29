@@ -5,6 +5,7 @@ import * as Actions from './actions';
 import * as Selectors from './selectors';
 import { Actions as CaretActions } from '../caret';
 import { Actions as BallsActions } from '../balls';
+import { Actions as BricksActions } from '../bricks';
 
 const GAME_TICK = 100;
 
@@ -30,10 +31,17 @@ function* startGameSaga() {
     return;
   }
   yield put(Actions.appStartedAction());
+  // initialize first bricks level
+  yield put(BricksActions.initBricksAction(1));
+  // reset caret position and speed
   yield put(CaretActions.resetAction());
+  // clean up balls
   yield put(BallsActions.resetBallsAction());
+  // add one initial ball
   yield put(BallsActions.initBallAction());
+  // kick ball
   yield fork(kickBallSaga);
+  // start cycle
   const gameCycle = yield fork(gameCycleSaga);
   yield take(ActionTypes.APP_STOP);
   yield cancel(gameCycle);

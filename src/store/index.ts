@@ -7,16 +7,19 @@ import createSagaMiddleware from 'redux-saga';
 import * as AppFeature from '../app';
 import * as CaretFeature from '../caret';
 import * as BallsFeature from '../balls';
+import * as BricksFeature from '../bricks';
 
 const reducer = combineReducers({
   [AppFeature.statePropName]: AppFeature.reducer,
   [CaretFeature.statePropName]: CaretFeature.reducer,
   [BallsFeature.statePropName]: BallsFeature.reducer,
+  [BricksFeature.statePropName]: BricksFeature.reducer,
 });
 type Actions =
   | AppFeature.ActionTypes.IActions
   | CaretFeature.ActionTypes.IActions
-  | BallsFeature.ActionTypes.IActions;
+  | BallsFeature.ActionTypes.IActions
+  | BricksFeature.ActionTypes.IActions;
 
 export type RootState = ReturnType<typeof reducer>;
 export type RootStore = Store<RootState, Actions>;
