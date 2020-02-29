@@ -5,12 +5,19 @@ import * as Actions from './actions';
 import * as Selectors from './selectors';
 import { VIEW_WIDTH } from '../constants';
 
-const MAX_SPEED = 7;
+// max speed caret can have
+const MAX_SPEED = 10;
+// real coordinates caret speed multiplier
 const SPEED_STEP = 5;
+// acceleration multiplier
+const ACCELERATION = 2;
+// deceleration multiplier
+const DECELERATION = 4;
 
 function* changeSpeedSaga(delta: number) {
   const oldSpeed = yield select(Selectors.getSpeed);
-  const newSpeed = oldSpeed + delta;
+  // apply acceleration/deceleration multipliers
+  const newSpeed = (oldSpeed * delta < 0) ? oldSpeed + delta * DECELERATION : oldSpeed + delta * ACCELERATION;
   const speed =
   newSpeed < 0
       ? Math.max(newSpeed, -MAX_SPEED)

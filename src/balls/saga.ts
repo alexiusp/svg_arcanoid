@@ -9,10 +9,13 @@ import * as Selectors from './selectors';
 import { IBallModel } from './types';
 import { ICaretModel } from '../caret/types';
 
-const DefaultBallRadius = 10;
+const DEFAULT_BALL_RADIUS = 10;
+// real coordinates ball speed multiplier
 const SPEED_STEP = 5;
-const StartBallSpeed = 3;
-const IMPULSE_RATIO = 1;
+// starting ball speed
+const START_BALL_SPEED = 3;
+// collision impulse transfer ratio
+const IMPULSE_RATIO = 0.5;
 
 function* initBallSaga() {
   // calculate default ball position on top right corner of the caret
@@ -20,9 +23,9 @@ function* initBallSaga() {
   const caretY = yield select(CaretSelectors.getYPos);
   const caretWidth = yield select(CaretSelectors.getWidth);
   const caretRight = caretX + caretWidth;
-  const x = caretRight - DefaultBallRadius * 2;
-  const y = caretY - DefaultBallRadius;
-  const r = DefaultBallRadius;
+  const x = caretRight - DEFAULT_BALL_RADIUS * 2;
+  const y = caretY - DEFAULT_BALL_RADIUS;
+  const r = DEFAULT_BALL_RADIUS;
   const ball = { x, y, r, vx: 0, vy: 0 } as IBallModel;
   yield put(Actions.addBallAction(ball));
 }
@@ -122,8 +125,8 @@ function* updateBallsSaga() {
 function* kickBallSaga({ index }: ActionTypes.IKickBallAction) {
   const ball = yield select(Selectors.getBall, index);
   const caretSpeed = yield select(CaretSelectors.getSpeed);
-  const vx = StartBallSpeed + caretSpeed;
-  const vy = -StartBallSpeed;
+  const vx = START_BALL_SPEED + caretSpeed;
+  const vy = -START_BALL_SPEED;
   const newBall: IBallModel = {
     ...ball,
     vx,
