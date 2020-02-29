@@ -25,9 +25,9 @@ export type RootState = ReturnType<typeof reducer>;
 export type RootStore = Store<RootState, Actions>;
 
 export function* rootSaga() {
-  const sagas = [AppFeature.Saga, CaretFeature.Saga, BallsFeature.Saga];
+  const sagas = [AppFeature.Saga, CaretFeature.Saga, BallsFeature.Saga, BricksFeature.Saga];
   yield all(
-    sagas.map(saga =>
+    sagas.map((saga) =>
       spawn(function*() {
         while (true) {
           try {
@@ -43,10 +43,7 @@ export function* rootSaga() {
 
 export default function getStore(): RootStore {
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
-    reducer,
-    composeWithDevTools(applyMiddleware(sagaMiddleware))
-  );
+  const store = createStore(reducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
   sagaMiddleware.run(rootSaga);
   return store;
 }

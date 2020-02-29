@@ -3,7 +3,7 @@ import * as Actions from './actions';
 import reducer, { initialState, statePropName } from './reducer';
 // import Ball from './Ball';
 // import BallsLayer from './BallsLayer';
-// import Saga from './saga';
+import Saga from './saga';
 // import * as Selectors from './selectors';
 
 export {
@@ -12,8 +12,8 @@ export {
   reducer,
   initialState,
   statePropName,
-/*  Selectors,
+//  Selectors,
   Saga,
-  Ball,
+/*  Ball,
   BallsLayer,*/
 };
