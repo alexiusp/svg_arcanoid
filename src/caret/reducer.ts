@@ -5,7 +5,7 @@ import { ICaretModel } from './types';
 export type IFeatureState = ICaretModel;
 
 const caretWidth = 120;
-const caretHeight = 20;
+const caretHeight = 24;
 const caretPosX = (VIEW_WIDTH - caretWidth) / 2;
 const caretPosY = VIEW_HEIGHT - caretHeight;
 

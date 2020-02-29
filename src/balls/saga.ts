@@ -9,7 +9,7 @@ import * as Selectors from './selectors';
 import { IBallModel } from './types';
 import { ICaretModel } from '../caret/types';
 
-const DEFAULT_BALL_RADIUS = 10;
+const DEFAULT_BALL_RADIUS = 12;
 // real coordinates ball speed multiplier
 const SPEED_STEP = 5;
 // starting ball speed

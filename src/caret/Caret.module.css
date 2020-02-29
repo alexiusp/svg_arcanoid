@@ -1,4 +1,5 @@
 .caret {
+  transition: all 0.05s linear;
   stroke: darkgreen;
   fill: darkgreen;
 }

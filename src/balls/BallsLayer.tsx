@@ -12,11 +12,11 @@ export interface IBallsLayerProps {
 
 const BallsLayer: React.FC<IBallsLayerProps> = ({ balls }) => {
   return (
-    <>
+    <g>
       {balls.map((ball, index) => (
         <Ball key={index} {...ball} />
       ))}
-    </>
+    </g>
   );
 }
 

@@ -12,11 +12,11 @@ export interface IBricksLayerProps {
 
 const BricksLayer: React.FC<IBricksLayerProps> = ({ bricks }) => {
   return (
-    <>
+    <g>
       {bricks.map((brick, index) => (
         <Brick key={index} {...brick} />
       ))}
-    </>
+    </g>
   );
 }
 
