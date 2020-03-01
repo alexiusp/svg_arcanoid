@@ -13,7 +13,7 @@ import { IBallModel } from './types';
 
 const DEFAULT_BALL_RADIUS = 12;
 // real coordinates ball speed multiplier
-const SPEED_STEP = 5;
+const SPEED_STEP = 6;
 // starting ball speed
 const START_BALL_SPEED = 3;
 // collision impulse transfer ratio

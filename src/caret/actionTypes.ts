@@ -12,6 +12,12 @@ export interface ICaretRightAction extends Action<CARET_RIGHT> {
   type: CARET_RIGHT;
 }
 
+export const CARET_STOP = 'CARET_STOP';
+export type CARET_STOP = typeof CARET_STOP;
+export interface ICaretStopAction extends Action<CARET_STOP> {
+  type: CARET_STOP;
+}
+
 export const CARET_SPEED = 'CARET_SPEED';
 export type CARET_SPEED = typeof CARET_SPEED;
 export interface IUpdateSpeedAction extends Action<CARET_SPEED> {

@@ -8,9 +8,9 @@ import { VIEW_WIDTH } from '../constants';
 // max speed caret can have
 const MAX_SPEED = 10;
 // real coordinates caret speed multiplier
-const SPEED_STEP = 5;
+const SPEED_STEP = 6;
 // acceleration multiplier
-const ACCELERATION = 2;
+const ACCELERATION = 4;
 // deceleration multiplier
 const DECELERATION = 4;
 
@@ -35,6 +35,10 @@ function* moveCaretRightSaga() {
   yield put(Actions.updateSpeedAction(speed));
 }
 
+function* stopCaretSaga() {
+  yield put(Actions.updateSpeedAction(0));
+}
+
 function* updateCaretSaga() {
   const oldXPos = yield select(Selectors.getXPos);
   let speed = yield select(Selectors.getSpeed);
@@ -53,6 +57,7 @@ export default function* watchCaret() {
   yield all([
     takeLatest(ActionTypes.CARET_LEFT, moveCaretLeftSaga),
     takeLatest(ActionTypes.CARET_RIGHT, moveCaretRightSaga),
+    takeLatest(ActionTypes.CARET_STOP, stopCaretSaga),
     takeLatest(ActionTypes.CARET_UPDATE, updateCaretSaga),
   ]);
 }

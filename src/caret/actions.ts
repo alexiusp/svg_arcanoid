@@ -10,6 +10,10 @@ export const moveRightAction: ActionCreator<ActionTypes.ICaretRightAction> = () 
   type: ActionTypes.CARET_RIGHT,
 });
 
+export const stopCaretAction: ActionCreator<ActionTypes.ICaretStopAction> = () => ({
+  type: ActionTypes.CARET_STOP,
+});
+
 export const updateSpeedAction: ActionCreator<ActionTypes.IUpdateSpeedAction> = (speed: number) => ({
   type: ActionTypes.CARET_SPEED,
   speed,

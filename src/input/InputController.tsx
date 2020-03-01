@@ -9,12 +9,13 @@ export interface IRootProps {
   running: boolean;
   onKeyLeft: () => void;
   onKeyRight: () => void;
+  onKeyUp: () => void;
 }
 
-export const InputController: React.FC<IRootProps> = ({ running, onKeyLeft, onKeyRight }) => {
+export const InputController: React.FC<IRootProps> = ({ running, onKeyLeft, onKeyRight, onKeyUp }) => {
   React.useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
-      // console.log('keyDownHandler', e);
+      // console.log('keyDownHandler', e.code);
       switch (e.code) {
         case 'ArrowLeft':
           onKeyLeft();
@@ -26,11 +27,21 @@ export const InputController: React.FC<IRootProps> = ({ running, onKeyLeft, onKe
           break;
       }
     };
-    const keyUpHandler = (e: KeyboardEvent) => null;//console.log('keyUpHandler', e);
+    const keyUpHandler = (e: KeyboardEvent) => {
+      // console.log('keyUpHandler', e.code);
+      switch (e.code) {
+        case 'ArrowLeft':
+        case 'ArrowRight':
+          onKeyUp();
+          break;
+        default:
+          break;
+      }
+    };
     const cleanup = () => {
       document.removeEventListener('keydown', keyDownHandler);
       document.removeEventListener('keyup', keyUpHandler);
-    }
+    };
     if (running) {
       document.addEventListener('keydown', keyDownHandler);
       document.addEventListener('keyup', keyUpHandler);
@@ -38,11 +49,9 @@ export const InputController: React.FC<IRootProps> = ({ running, onKeyLeft, onKe
       cleanup();
     }
     return cleanup;
-  }, [ running, onKeyLeft, onKeyRight ]);
-  return (
-    <div />
-  );
-}
+  }, [running, onKeyLeft, onKeyRight, onKeyUp]);
+  return <div />;
+};
 
 export const mapStateToProps = (state: RootState) => {
   const running = Selectors.isRunning(state);
@@ -54,5 +63,6 @@ export const mapStateToProps = (state: RootState) => {
 export const mapDispatchToProps = {
   onKeyLeft: CaretActions.moveLeftAction,
   onKeyRight: CaretActions.moveRightAction,
+  onKeyUp: CaretActions.stopCaretAction,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(InputController);
