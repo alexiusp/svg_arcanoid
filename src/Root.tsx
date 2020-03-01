@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import './Root.css';
-import { Actions, Selectors } from './app';
+import { Actions, Selectors, ScoresLayer } from './app';
 import { VIEW_WIDTH, VIEW_HEIGHT } from './constants';
 import { RootState } from './store';
 
@@ -23,6 +23,7 @@ export const Root: React.FC<IRootProps> = ({ running, onStart }) => {
         <BricksLayer />
         <BallsLayer />
         <Caret />
+        <ScoresLayer />
       </svg>
       <button onClick={startHandler}>{ running ? 'Stop' : 'Start' }</button>
     </div>

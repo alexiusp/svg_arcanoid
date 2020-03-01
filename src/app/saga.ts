@@ -1,11 +1,11 @@
-import { all, cancel, delay, fork, put, select, take, takeLatest } from 'redux-saga/effects';
+import { all, cancel, delay, fork, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
 import { Actions as CaretActions } from '../caret';
 import { Actions as BallsActions } from '../balls';
-import { Actions as BricksActions } from '../bricks';
+import { Actions as BricksActions, ActionTypes as BricksActionTypes } from '../bricks';
 
 const GAME_TICK = 100;
 
@@ -47,8 +47,13 @@ function* startGameSaga() {
   yield cancel(gameCycle);
 }
 
+function* scoreBrickHitSaga() {
+  yield put(Actions.incrementScoresAction(1));
+}
+
 export default function* watchApp() {
   yield all([
     takeLatest(ActionTypes.APP_START, startGameSaga),
+    takeEvery(BricksActionTypes.BRICK_HIT, scoreBrickHitSaga),
   ]);
 }

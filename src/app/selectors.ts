@@ -10,3 +10,5 @@ export interface IState {
 const getAppState = (state: IState) => state[statePropName];
 
 export const isRunning = (state: IState) => getAppState(state).running;
+
+export const getScores = (state: IState) => getAppState(state).scores;

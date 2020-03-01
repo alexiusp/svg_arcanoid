@@ -1,19 +1,16 @@
 .brick {
   stroke-width: 1;
+  stroke: white;
 }
 .brick-1 {
-  stroke: deepskyblue;
   fill: khaki;
 }
 .brick-2 {
-  stroke: deepskyblue;
   fill: lightcoral;
 }
 .brick-3 {
-  stroke: deepskyblue;
   fill: maroon;
 }
 .brick-4 {
-  stroke: deepskyblue;
   fill: purple;
 }

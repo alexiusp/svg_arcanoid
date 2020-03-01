@@ -18,4 +18,11 @@ export interface IAppStopAction extends Action<APP_STOP> {
   type: APP_STOP;
 }
 
-export type IActions = IAppStartAction | IAppStartedAction | IAppStopAction;
+export const APP_SCORES_INCREMENT = 'APP_SCORES_INCREMENT';
+export type APP_SCORES_INCREMENT = typeof APP_SCORES_INCREMENT;
+export interface IIncrementScoresAction extends Action<APP_SCORES_INCREMENT> {
+  type: APP_SCORES_INCREMENT;
+  amount: number;
+}
+
+export type IActions = IAppStartAction | IAppStartedAction | IAppStopAction | IIncrementScoresAction;
