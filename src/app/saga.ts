@@ -9,12 +9,6 @@ import { Actions as BricksActions, ActionTypes as BricksActionTypes } from '../b
 
 const GAME_TICK = 100;
 
-function* kickBallSaga() {
-  // wait one tick
-  yield delay(GAME_TICK);
-  yield put(BallsActions.kickBallAction(0));
-}
-
 function* gameCycleSaga() {
   while(true) {
     // update caret position
@@ -39,8 +33,6 @@ function* startGameSaga() {
   yield put(BallsActions.resetBallsAction());
   // add one initial ball
   yield put(BallsActions.initBallAction());
-  // kick ball
-  yield fork(kickBallSaga);
   // start cycle
   const gameCycle = yield fork(gameCycleSaga);
   yield take(ActionTypes.APP_STOP);

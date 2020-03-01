@@ -2,6 +2,7 @@ import * as ActionTypes from './actionTypes';
 import { IBallModel } from './types';
 
 export interface IFeatureState {
+  // all balls in game
   balls: IBallModel[];
 }
 

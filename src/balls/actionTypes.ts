@@ -32,7 +32,6 @@ export const BALL_KICK = 'BALL_KICK';
 export type BALL_KICK = typeof BALL_KICK;
 export interface IKickBallAction extends Action<BALL_KICK> {
   type: BALL_KICK;
-  index: number;
 }
 
 export const BALL_HIT_FLOOR = 'BALL_HIT_FLOOR';

@@ -22,9 +22,8 @@ export const updateAction: ActionCreator<ActionTypes.IUpdateAllBallsAction> = ()
     type: ActionTypes.BALLS_UPDATE,
 });
 
-export const kickBallAction: ActionCreator<ActionTypes.IKickBallAction> = (index: number) => ({
+export const kickBallAction: ActionCreator<ActionTypes.IKickBallAction> = () => ({
   type: ActionTypes.BALL_KICK,
-  index,
 });
 
 export const ballHitFloorAction: ActionCreator<ActionTypes.IBallHitFloorAction> = (index: number) => ({

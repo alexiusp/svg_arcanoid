@@ -1,4 +1,4 @@
-import { all, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import { ICaretModel } from '../caret/types';
 import { IRect } from '../types';
@@ -17,8 +17,8 @@ const START_BALL_SPEED = 24;
 // collision impulse transfer ratio
 const IMPULSE_RATIO = 0.5;
 
-function* initBallSaga() {
-  // calculate default ball position on top right corner of the caret
+function* getBallStickyToCaret() {
+  // calculate ball position on top right corner of the caret
   const caretX = yield select(CaretSelectors.getXPos);
   const caretY = yield select(CaretSelectors.getYPos);
   const caretWidth = yield select(CaretSelectors.getWidth);
@@ -26,7 +26,12 @@ function* initBallSaga() {
   const x = caretRight - DEFAULT_BALL_RADIUS * 2;
   const y = caretY - DEFAULT_BALL_RADIUS;
   const r = DEFAULT_BALL_RADIUS;
-  const ball = { x, y, r, vx: 0, vy: 0 } as IBallModel;
+  const ball: IBallModel = { x, y, r, vx: 0, vy: 0 };
+  return ball;
+}
+
+function* initBallSaga() {
+  const ball = yield call(getBallStickyToCaret);
   yield put(Actions.addBallAction(ball));
 }
 
@@ -145,8 +150,15 @@ function* updateBallsSaga() {
   const balls: IBallModel[] = yield select(Selectors.getBalls);
   for (let index = 0; index < balls.length; index++) {
     const ball = balls[index];
-    // calculate new ball position
-    const newBall: IBallModel = {
+    let newBall: IBallModel;
+    if (ball.vx === 0 && ball.vy === 0) {
+      // if ball is sticky to caret - calculate position and continue loop
+      newBall = yield call(getBallStickyToCaret);
+      yield put(Actions.updateBallAction(index, newBall));
+      continue;
+    }
+    // if not sticky - calculate new ball position
+    newBall = {
       ...ball,
       x: ball.x + ball.vx,
       y: ball.y + ball.vy,
@@ -266,7 +278,11 @@ function* updateBallsSaga() {
   }
 }
 
-function* kickBallSaga({ index }: ActionTypes.IKickBallAction) {
+function* kickBallSaga() {
+  const index = yield select(Selectors.getFirstInactiveBallIndex);
+  if (index < 0) {
+    return;
+  }
   const ball = yield select(Selectors.getBall, index);
   const caretSpeed = yield select(CaretSelectors.getSpeed);
   const vx = START_BALL_SPEED + caretSpeed;
