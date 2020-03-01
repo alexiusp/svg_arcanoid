@@ -12,10 +12,8 @@ import * as Selectors from './selectors';
 import { IBallModel } from './types';
 
 const DEFAULT_BALL_RADIUS = 12;
-// real coordinates ball speed multiplier
-const SPEED_STEP = 6;
 // starting ball speed
-const START_BALL_SPEED = 3;
+const START_BALL_SPEED = 24;
 // collision impulse transfer ratio
 const IMPULSE_RATIO = 0.5;
 
@@ -36,6 +34,57 @@ function lengthSqr(x1: number, y1: number, x2: number, y2: number) {
   return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2);
 }
 
+enum ERectPosition {
+  Inside,
+  LeftTop,
+  Left,
+  LeftBottom,
+  Bottom,
+  RightBottom,
+  Right,
+  RightTop,
+  Top,
+}
+
+/**
+ * returns 'sector' of space where the ball is relative to given rect
+ * @param ball ball which position being calculated
+ * @param rect reactangular relative to which position is being calculated
+ * @returns ERectPosition
+ */
+function getRectPosition(ball: IBallModel, rect: IRect) {
+  const isLeft = ball.x <= rect.x;
+  const isRight = ball.x >= rect.x + rect.width;
+  const isTop = ball.y <= rect.y;
+  const isBottom = ball.y >= rect.y + rect.height;
+  if (isLeft && isTop) {
+    // left-top corner
+    return ERectPosition.LeftTop;
+  } else if (isLeft && isBottom) {
+    // left-bottom corner
+    return ERectPosition.LeftBottom;
+  } else if (isLeft) {
+    // left side
+    return ERectPosition.Left;
+  } else if (isRight && isBottom) {
+    // right-bottom corner
+    return ERectPosition.RightBottom;
+  } else if (isBottom) {
+    // bottom side
+    return ERectPosition.Bottom;
+  } else if (isRight && isTop) {
+    // right-top corner
+    return ERectPosition.RightTop;
+  } else if (isRight) {
+    // right side
+    return ERectPosition.Right;
+  } else if (isTop) {
+    // top side
+    return ERectPosition.Top;
+  }
+  return ERectPosition.Inside;
+}
+
 enum ERectCollision {
   None,
   LeftTop,
@@ -50,43 +99,43 @@ enum ERectCollision {
 }
 
 function getCollision(ball: IBallModel, rect: IRect) {
-  const isLeft = ball.x <= rect.x;
-  const isRight = ball.x >= rect.x + rect.width;
-  const isTop = ball.y <= rect.y;
-  const isBottom = ball.y >= rect.y + rect.height;
-  let collide = false;
-  if (isLeft && isTop) {
-    // left-top corner
-    collide = lengthSqr(ball.x, ball.y, rect.x, rect.y) <= Math.pow(ball.r, 2);
-    return collide ? ERectCollision.LeftTop : ERectCollision.None;
-  } else if (isLeft && isBottom) {
-    // left-bottom corner
-    collide = lengthSqr(ball.x, ball.y, rect.x, rect.y + rect.height) <= Math.pow(ball.r, 2);
-    return collide ? ERectCollision.LeftBottom : ERectCollision.None;
-  } else if (isLeft) {
-    // left side
-    collide = rect.x - ball.x <= ball.r;
-    return collide ? ERectCollision.Left : ERectCollision.None;
-  } else if (isRight && isBottom) {
-    // right-bottom corner
-    collide = lengthSqr(ball.x, ball.y, rect.x + rect.width, rect.y + rect.height) <= Math.pow(ball.r, 2);
-    return collide ? ERectCollision.RightBottom : ERectCollision.None;
-  } else if (isBottom) {
-    // bottom side
-    collide = ball.y - (rect.y + rect.height) <= ball.r;
-    return collide ? ERectCollision.Bottom : ERectCollision.None;
-  } else if (isRight && isTop) {
-    // right-top corner
-    collide = lengthSqr(ball.x, ball.y, rect.x + rect.width, rect.y) <= Math.pow(ball.r, 2);
-    return collide ? ERectCollision.RightTop : ERectCollision.None;
-  } else if (isRight) {
-    // right side
-    collide = ball.x - (rect.x + rect.width) <= ball.r;
-    return collide ? ERectCollision.Right : ERectCollision.None;
-  } else if (isTop) {
-    // top side
-    collide = rect.y - ball.y <= ball.r;
-    return collide ? ERectCollision.Top : ERectCollision.None;
+  const sector = getRectPosition(ball, rect);
+  let collide: boolean;
+  switch (sector) {
+    case ERectPosition.LeftTop: {
+      collide = lengthSqr(ball.x, ball.y, rect.x, rect.y) <= Math.pow(ball.r, 2);
+      return collide ? ERectCollision.LeftTop : ERectCollision.None;
+    }
+    case ERectPosition.LeftBottom: {
+      collide = lengthSqr(ball.x, ball.y, rect.x, rect.y + rect.height) <= Math.pow(ball.r, 2);
+      return collide ? ERectCollision.LeftBottom : ERectCollision.None;
+    }
+    case ERectPosition.Left: {
+      collide = rect.x - ball.x <= ball.r;
+      return collide ? ERectCollision.Left : ERectCollision.None;
+    }
+    case ERectPosition.RightBottom: {
+      collide = lengthSqr(ball.x, ball.y, rect.x + rect.width, rect.y + rect.height) <= Math.pow(ball.r, 2);
+      return collide ? ERectCollision.RightBottom : ERectCollision.None;
+    }
+    case ERectPosition.Bottom: {
+      collide = ball.y - (rect.y + rect.height) <= ball.r;
+      return collide ? ERectCollision.Bottom : ERectCollision.None;
+    }
+    case ERectPosition.RightTop: {
+      collide = lengthSqr(ball.x, ball.y, rect.x + rect.width, rect.y) <= Math.pow(ball.r, 2);
+      return collide ? ERectCollision.RightTop : ERectCollision.None;
+    }
+    case ERectPosition.Right: {
+      collide = ball.x - (rect.x + rect.width) <= ball.r;
+      return collide ? ERectCollision.Right : ERectCollision.None;
+    }
+    case ERectPosition.Top: {
+      collide = rect.y - ball.y <= ball.r;
+      return collide ? ERectCollision.Top : ERectCollision.None;
+    }
+    default:
+      break;
   }
   // inside
   return ERectCollision.Inside;
@@ -97,46 +146,88 @@ function* updateBallsSaga() {
   for (let index = 0; index < balls.length; index++) {
     const ball = balls[index];
     // calculate new ball position
-    let posX = ball.x + ball.vx * SPEED_STEP;
-    let posY = ball.y + ball.vy * SPEED_STEP;
-    let newVX = ball.vx;
-    let newVY = ball.vy;
     const newBall: IBallModel = {
       ...ball,
-      x: posX,
-      y: posY,
-      vx: newVX,
-      vy: newVY,
+      x: ball.x + ball.vx,
+      y: ball.y + ball.vy,
     };
     // check for collision with bricks
     // TODO: optimise check by reducing set of bricks under test
-    const bricks = yield select(BricksSelectors.getBricks);
+    const bricks: IRect[] = yield select(BricksSelectors.getBricks);
     let brickCollision = ERectCollision.None;
     for (let brickIndex = 0; brickIndex < bricks.length; brickIndex++) {
       const brick = bricks[brickIndex];
       brickCollision = getCollision(newBall, brick);
-      if (brickCollision !== ERectCollision.None) {
-        // collision found - exit loop
-        yield put(BricksActions.hitBrickAction(brickIndex));
-        break;
+      if (brickCollision === ERectCollision.None) {
+        // no collision - skip calculations
+        continue;
       }
-    }
-    switch (brickCollision) {
-      case ERectCollision.Bottom:
-      case ERectCollision.Top:
-        newBall.vy = -newBall.vy;
-        break;
-      case ERectCollision.Right:
-      case ERectCollision.Left:
-        newBall.vx = -newBall.vx;
-        break;
-      case ERectCollision.LeftBottom:
-      case ERectCollision.LeftTop:
-      case ERectCollision.RightBottom:
-      case ERectCollision.RightTop:
-      case ERectCollision.Inside:
-        newBall.vy = -newBall.vy;
-        newBall.vx = -newBall.vx;
+      yield put(BricksActions.hitBrickAction(brickIndex));
+      switch (brickCollision) {
+        case ERectCollision.Bottom:
+          newBall.y = brick.y + brick.height + newBall.r;
+          newBall.vy = -newBall.vy;
+          break;
+        case ERectCollision.Top:
+          newBall.y = brick.y - newBall.r;
+          newBall.vy = -newBall.vy;
+          break;
+        case ERectCollision.Right:
+          newBall.x = brick.x + brick.width + newBall.r;
+          newBall.vx = -newBall.vx;
+          break;
+        case ERectCollision.Left:
+          newBall.x = brick.x - newBall.r;
+          newBall.vx = -newBall.vx;
+          break;
+        case ERectCollision.LeftBottom:
+        case ERectCollision.LeftTop:
+        case ERectCollision.RightBottom:
+        case ERectCollision.RightTop:
+          newBall.vy = -newBall.vy;
+          newBall.vx = -newBall.vx;
+          break;
+        case ERectCollision.Inside: {
+          // if inside collision detected - try to detect real collision
+          // by calculating the position of the ball in the middle of movement
+          const posX = Math.trunc(ball.x + ball.vx / 2);
+          const posY = Math.trunc(ball.y + ball.vy / 2);
+          const middleBall: IBallModel = {
+            ...ball,
+            x: posX,
+            y: posY,
+          };
+          const position = getRectPosition(middleBall, brick);
+          switch (position) {
+            case ERectPosition.Inside:
+            case ERectPosition.LeftBottom:
+            case ERectPosition.LeftTop:
+            case ERectPosition.RightBottom:
+            case ERectPosition.RightTop:
+              newBall.vy = -newBall.vy;
+              newBall.vx = -newBall.vx;
+              break;
+            case ERectPosition.Bottom:
+              newBall.y = brick.y + brick.height + newBall.r;
+              newBall.vy = -newBall.vy;
+              break;
+            case ERectPosition.Top:
+              newBall.y = brick.y - newBall.r;
+              newBall.vy = -newBall.vy;
+              break;
+            case ERectPosition.Right:
+              newBall.x = brick.x + brick.width + newBall.r;
+              newBall.vx = -newBall.vx;
+              break;
+            case ERectPosition.Left:
+              newBall.x = brick.x - newBall.r;
+              newBall.vx = -newBall.vx;
+              break;
+          }
+          break;
+        }
+      }
+      break;
     }
     // check for collision with caret
     const caret: ICaretModel = yield select(CaretSelectors.getCaretModel);
