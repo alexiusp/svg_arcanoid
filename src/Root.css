@@ -12,7 +12,8 @@
   height: 480px;
   width: 480px;
   flex: 0 0 auto;
-  background-color: white;
+  background-image: url('./bg.png');
+  background-size: cover;
 }
 
 .root button {

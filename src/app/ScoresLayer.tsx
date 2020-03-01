@@ -5,7 +5,6 @@ import styles from './ScoresLayer.module.css';
 
 import { RootState } from '../store';
 import * as Selectors from './selectors';
-import { VIEW_WIDTH } from '../constants';
 
 export interface IScoresLayerProps {
   scores: number;
@@ -14,7 +13,7 @@ export interface IScoresLayerProps {
 const ScoresLayer: React.FC<IScoresLayerProps> = ({ scores }) => {
   return (
     <g>
-      <text className={styles.scores} x={VIEW_WIDTH - 360} y={120}>Scores: {scores}</text>
+      <text className={styles.scores} x={20} y={60}  dominantBaseline="middle">Scores: {scores}</text>
     </g>
   );
 }

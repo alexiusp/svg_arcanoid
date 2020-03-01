@@ -1,0 +1,38 @@
+.animating {
+  animation: fade-out 1s;
+}
+
+.container {
+  fill: antiquewhite;
+  fill-opacity: 0.6;
+  stroke: cornflowerblue;
+  stroke-width: 1;
+}
+
+.menuItem {
+  fill: darkgreen;
+  fill-opacity: 1;
+  stroke: white;
+  stroke-width: 1;
+}
+.menuItem:hover rect {
+  cursor: pointer;
+  stroke: darkred;
+}
+.menuItem:hover .menuLabel {
+  cursor: pointer;
+  fill: yellow;
+}
+
+.menuLabel {
+ fill: white;
+ font-size: 4rem;
+ line-height: 4rem;
+ font-weight: 700;
+ font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+@keyframes fade-out {
+  0% {opacity: 1}
+  100% {opacity: 0}
+}
