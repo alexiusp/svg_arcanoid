@@ -3,12 +3,24 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import './index.css';
+
+import { STATE_STORE_KEY } from './constants';
+import InputController from './input/InputController';
 import Root from './Root';
 import * as serviceWorker from './serviceWorker';
-import getStore from './store';
-import InputController from './input/InputController';
+import getStore, { RootState } from './store';
 
-const store = getStore();
+let preloadedState: RootState | undefined;
+try {
+  const saved = localStorage.getItem(STATE_STORE_KEY);
+  if (saved) {
+    preloadedState = JSON.parse(saved);
+  }
+} catch (error) {
+  console.error(error);
+}
+
+const store = getStore(preloadedState);
 ReactDOM.render(
   <Provider store={store}>
     <InputController />

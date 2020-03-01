@@ -25,4 +25,24 @@ export interface IIncrementScoresAction extends Action<APP_SCORES_INCREMENT> {
   amount: number;
 }
 
-export type IActions = IAppStartAction | IAppStartedAction | IAppStopAction | IIncrementScoresAction;
+export const APP_GAME_OVER = 'APP_GAME_OVER';
+export type APP_GAME_OVER = typeof APP_GAME_OVER;
+export interface IGameOverAction extends Action<APP_GAME_OVER> {
+  type: APP_GAME_OVER;
+}
+
+export const APP_HISCORE = 'APP_HISCORE';
+export type APP_HISCORE = typeof APP_HISCORE;
+export interface IHiscoreAction extends Action<APP_HISCORE> {
+  type: APP_HISCORE;
+  hiscores: number[];
+  position: number;
+}
+
+export type IActions =
+  | IAppStartAction
+  | IAppStartedAction
+  | IAppStopAction
+  | IIncrementScoresAction
+  | IGameOverAction
+  | IHiscoreAction;

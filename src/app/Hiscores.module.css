@@ -1,0 +1,19 @@
+.hiscores {
+  fill: antiquewhite;
+  fill-opacity: 0.6;
+  stroke: cornflowerblue;
+  stroke-width: 1;
+}
+.hiscoreBox {
+  fill: darkgreen;
+  fill-opacity: 1;
+  stroke: white;
+  stroke-width: 1;
+}
+.hiscoreLabel {
+  fill: white;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: 500;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

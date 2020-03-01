@@ -17,10 +17,10 @@ const MENU_ITEM_WIDTH = 360;
 const MENU_ITEM_HEIGHT = 120;
 const MENU_PADDING = 10;
 const menuItemsLength = 1;
-const menuX = Math.round(VIEW_WIDTH / 3);
-const menuY = Math.round((VIEW_HEIGHT - MENU_ITEM_HEIGHT * menuItemsLength) / 2);
 const menuWidth = MENU_ITEM_WIDTH + MENU_PADDING * 2;
+const menuX = Math.round((VIEW_WIDTH - menuWidth) / 2);
 const menuHeight = (MENU_ITEM_HEIGHT + MENU_PADDING * 2) * menuItemsLength;
+const menuY = Math.round((VIEW_HEIGHT - menuHeight) / 2);
 
 export const MainMenu: React.FC<IMainMenuProps> = ({ running, onStart }) => {
   const [isAnimating, toggleAnimation] = React.useState<boolean>(false);

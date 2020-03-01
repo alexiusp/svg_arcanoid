@@ -41,9 +41,9 @@ export function* rootSaga() {
   );
 }
 
-export default function getStore(): RootStore {
+export default function getStore(preloadedState?: RootState): RootStore {
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(reducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+  const store = createStore(reducer, preloadedState, composeWithDevTools(applyMiddleware(sagaMiddleware)));
   sagaMiddleware.run(rootSaga);
   return store;
 }

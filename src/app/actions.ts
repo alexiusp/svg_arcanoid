@@ -18,3 +18,13 @@ export const incrementScoresAction: ActionCreator<ActionTypes.IIncrementScoresAc
   type: ActionTypes.APP_SCORES_INCREMENT,
   amount,
 });
+
+export const gameOverAction: ActionCreator<ActionTypes.IGameOverAction> = () => ({
+  type: ActionTypes.APP_GAME_OVER,
+});
+
+export const hiscoreAction: ActionCreator<ActionTypes.IHiscoreAction> = (hiscores: number[], position: number) => ({
+  type: ActionTypes.APP_HISCORE,
+  hiscores,
+  position,
+});

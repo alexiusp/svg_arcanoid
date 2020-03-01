@@ -299,10 +299,10 @@ function* handleFloorCollision({ index }: ActionTypes.IBallHitFloorAction) {
   // if last ball - stop the game
   // TODO: implement proper game over action
   const amount = yield select(Selectors.getAmountOfBalls);
-  if (amount === 1) {
-    yield put(AppActions.stopAppAction());
-  }
   yield put(Actions.removeBallAction(index));
+  if (amount === 1) {
+    yield put(AppActions.gameOverAction());
+  }
 }
 
 export default function* watchBalls() {
