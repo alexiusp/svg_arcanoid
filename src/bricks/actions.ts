@@ -12,3 +12,8 @@ export const addBrickAction: ActionCreator<ActionTypes.IAddBrickAction> = (brick
   type: ActionTypes.BRICK_ADD,
   brick,
 });
+
+export const hitBrickAction: ActionCreator<ActionTypes.IHitBrickAction> = (index: number) => ({
+  type: ActionTypes.BRICK_HIT,
+  index,
+});

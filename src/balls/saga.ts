@@ -2,10 +2,10 @@ import { all, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import { ICaretModel } from '../caret/types';
 import { IRect } from '../types';
-import { Selectors as BricksSelectors } from '../bricks';
+import { Actions as AppActions } from '../app';
+import { Actions as BricksActions, Selectors as BricksSelectors } from '../bricks';
 import { Selectors as CaretSelectors } from '../caret';
 import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
-import { Actions as AppActions } from '../app';
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
 import * as Selectors from './selectors';
@@ -117,6 +117,7 @@ function* updateBallsSaga() {
       brickCollision = getCollision(newBall, brick);
       if (brickCollision !== ERectCollision.None) {
         // collision found - exit loop
+        yield put(BricksActions.hitBrickAction(brickIndex));
         break;
       }
     }
@@ -142,6 +143,7 @@ function* updateBallsSaga() {
     const caretCollision = getCollision(newBall, caret);
     if (caretCollision !== ERectCollision.None) {
       // does not matter wich side of caret collide
+      newBall.y = caret.y - newBall.r;
       newBall.vy = -newBall.vy;
       newBall.vx += caret.speed * IMPULSE_RATIO;
     } else {

@@ -15,4 +15,11 @@ export interface IAddBrickAction extends Action<BRICK_ADD> {
   brick: IBrickModel;
 }
 
-export type IActions = IInitBricksAction | IAddBrickAction;
+export const BRICK_HIT = 'BRICK_HIT';
+export type BRICK_HIT = typeof BRICK_HIT;
+export interface IHitBrickAction extends Action<BRICK_HIT> {
+  type: BRICK_HIT;
+  index: number;
+}
+
+export type IActions = IInitBricksAction | IAddBrickAction | IHitBrickAction;
