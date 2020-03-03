@@ -14,7 +14,7 @@ export interface ICaretProps {
 
 const Caret: React.FC<ICaretProps> = ({ x, y, width, height }) => {
   return (
-    <rect className={styles.caret} x={x} y={y} width={width} height={height} />
+    <rect className={styles.caret} x={x} y={y} width={width} height={height} rx={2} ry={2} />
   );
 }
 

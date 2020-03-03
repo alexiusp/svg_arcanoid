@@ -32,15 +32,29 @@ export const MainMenu: React.FC<IMainMenuProps> = ({ running, onStart }) => {
       onStart();
       clearTimeout(timeout.current as number);
     }, 900);
-  }
+  };
   const menuClasses = `${isAnimating ? styles.animating : ''}`;
   return running ? null : (
     <g className={menuClasses}>
       <rect className={styles.menuOverlay} x={0} y={0} width={VIEW_WIDTH} height={VIEW_HEIGHT} />
-      <rect className={styles.container} x={menuX} y={menuY} width={menuWidth} height={menuHeight} />
+      <rect className={styles.container} x={menuX} y={menuY} width={menuWidth} height={menuHeight} rx={10} ry={10} />
       <g className={styles.menuItem} onClick={clickHandler}>
-        <rect x={menuX + MENU_PADDING} y={menuY + MENU_PADDING} width={MENU_ITEM_WIDTH} height={MENU_ITEM_HEIGHT} />
-        <text className={styles.menuLabel} x={menuX + menuWidth / 2} y={menuY + MENU_PADDING + MENU_ITEM_HEIGHT / 2} dominantBaseline="middle" textAnchor="middle">START GAME</text>
+        <rect
+          x={menuX + MENU_PADDING}
+          y={menuY + MENU_PADDING}
+          width={MENU_ITEM_WIDTH}
+          height={MENU_ITEM_HEIGHT}
+          rx={10}
+          ry={10}
+        />
+        <text
+          className={styles.menuLabel}
+          x={menuX + menuWidth / 2}
+          y={menuY + MENU_PADDING + MENU_ITEM_HEIGHT / 2}
+          dominantBaseline="middle"
+          textAnchor="middle">
+          START GAME
+        </text>
       </g>
     </g>
   );

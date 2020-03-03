@@ -22,7 +22,7 @@
 }
 .menuItem:hover rect {
   cursor: pointer;
-  stroke: darkred;
+  fill: green;
 }
 .menuItem:hover .menuLabel {
   cursor: pointer;
