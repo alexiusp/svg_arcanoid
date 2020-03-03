@@ -42,8 +42,9 @@ const Hiscores: React.FC<IHiscoresProps> = ({ hiscores, position, onClose }) => 
         const rectY = panelY + (PANEL_ITEM_HEIGHT + PANEL_PADDING * 2) * (index + 1);
         const textX = panelX + panelWidth / 2;
         const textY = rectY + PANEL_PADDING + PANEL_ITEM_HEIGHT / 2;
+        const boxClass = `${styles.hiscoreBox} ${position === index + 1 ? styles.current : ''}`;
         return (
-        <g key={index} className={styles.hiscoreBox}>
+        <g key={index} className={boxClass}>
           <rect
             x={rectX}
             y={rectY}

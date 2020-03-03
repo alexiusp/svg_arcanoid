@@ -14,6 +14,9 @@
   stroke: white;
   stroke-width: 1;
 }
+.current {
+  fill: green;
+}
 .hiscoreLabel {
   fill: white;
   font-size: 2rem;
