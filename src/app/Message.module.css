@@ -1,0 +1,67 @@
+.message {
+  transform-origin: 50% 50%;
+}
+.message.enter {
+  animation: fadeIn var(--timeout);
+}
+.message.show {
+  animation: pulse var(--timeout);
+}
+.message.exit {
+  opacity: 0;
+  animation: fadeOut var(--timeout);
+}
+
+.container {
+  fill-opacity: 0;
+  stroke: green;
+  stroke-width: 4;
+}
+
+.text {
+  font-weight: 500;
+  fill: white;
+  font-size: 4rem;
+  line-height: 4rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}

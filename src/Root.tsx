@@ -9,6 +9,7 @@ import { BallsLayer } from './balls';
 import { BricksLayer } from './bricks';
 import MainMenu from './input/MainMenu';
 import BGLayer from './bg/BGLayer';
+import Message from './app/Message';
 
 const Root: React.FC = () => (
     <div className="root">
@@ -19,6 +20,7 @@ const Root: React.FC = () => (
         <Caret />
         <ScoresLayer />
         <MainMenu />
+        <Message onClose={() => null}>TEST</Message>
       </svg>
     </div>
 );
