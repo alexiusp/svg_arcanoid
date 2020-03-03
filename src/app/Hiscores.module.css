@@ -1,3 +1,7 @@
+.hiscoresOverlay {
+  fill: black;
+  fill-opacity: 0.4;
+}
 .hiscores {
   fill: antiquewhite;
   fill-opacity: 0.6;

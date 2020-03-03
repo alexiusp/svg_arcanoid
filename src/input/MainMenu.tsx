@@ -36,6 +36,7 @@ export const MainMenu: React.FC<IMainMenuProps> = ({ running, onStart }) => {
   const menuClasses = `${isAnimating ? styles.animating : ''}`;
   return running ? null : (
     <g className={menuClasses}>
+      <rect className={styles.menuOverlay} x={0} y={0} width={VIEW_WIDTH} height={VIEW_HEIGHT} />
       <rect className={styles.container} x={menuX} y={menuY} width={menuWidth} height={menuHeight} />
       <g className={styles.menuItem} onClick={clickHandler}>
         <rect x={menuX + MENU_PADDING} y={menuY + MENU_PADDING} width={MENU_ITEM_WIDTH} height={MENU_ITEM_HEIGHT} />

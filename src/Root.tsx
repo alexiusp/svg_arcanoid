@@ -8,10 +8,12 @@ import { Caret } from './caret';
 import { BallsLayer } from './balls';
 import { BricksLayer } from './bricks';
 import MainMenu from './input/MainMenu';
+import BGLayer from './bg/BGLayer';
 
 const Root: React.FC = () => (
     <div className="root">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}>
+        <BGLayer />
         <BricksLayer />
         <BallsLayer />
         <Caret />

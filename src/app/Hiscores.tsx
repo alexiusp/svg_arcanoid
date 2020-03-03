@@ -26,6 +26,7 @@ const Hiscores: React.FC<IHiscoresProps> = ({ hiscores, position, onClose }) => 
   const panelY = Math.round((VIEW_HEIGHT - panelHeight) / 2);
   return (
     <g onClick={() => onClose()}>
+      <rect className={styles.hiscoresOverlay} x={0} y={0} width={VIEW_WIDTH} height={VIEW_HEIGHT} />
       <rect className={styles.hiscore} x={panelX} y={panelY} width={panelWidth} height={panelHeight} />
       <rect x={panelX + PANEL_PADDING} y={panelY + PANEL_PADDING} width={PANEL_ITEM_WIDTH} height={PANEL_ITEM_HEIGHT} />
       <text
