@@ -39,10 +39,25 @@ export interface IHiscoreAction extends Action<APP_HISCORE> {
   position: number;
 }
 
+export const APP_MESSAGE = 'APP_MESSAGE';
+export type APP_MESSAGE = typeof APP_MESSAGE;
+export interface IMessageAction extends Action<APP_MESSAGE> {
+  type: APP_MESSAGE;
+  message: string;
+}
+
+export const APP_MESSAGE_CLEAR = 'APP_MESSAGE_CLEAR';
+export type APP_MESSAGE_CLEAR = typeof APP_MESSAGE_CLEAR;
+export interface IClearMessageAction extends Action<APP_MESSAGE_CLEAR> {
+  type: APP_MESSAGE_CLEAR;
+}
+
 export type IActions =
   | IAppStartAction
   | IAppStartedAction
   | IAppStopAction
   | IIncrementScoresAction
   | IGameOverAction
-  | IHiscoreAction;
+  | IHiscoreAction
+  | IMessageAction
+  | IClearMessageAction;

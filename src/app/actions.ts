@@ -28,3 +28,12 @@ export const hiscoreAction: ActionCreator<ActionTypes.IHiscoreAction> = (hiscore
   hiscores,
   position,
 });
+
+export const messageAction: ActionCreator<ActionTypes.IMessageAction> = (message: string) => ({
+  type: ActionTypes.APP_MESSAGE,
+  message,
+});
+
+export const clearMessageAction: ActionCreator<ActionTypes.IClearMessageAction> = () => ({
+  type: ActionTypes.APP_MESSAGE_CLEAR,
+});

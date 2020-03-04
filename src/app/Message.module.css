@@ -1,3 +1,6 @@
+.overlay {
+  opacity: 0.2;
+}
 .message {
   transform-origin: 50% 50%;
 }
@@ -13,9 +16,10 @@
 }
 
 .container {
-  fill-opacity: 0;
-  stroke: green;
+  fill-opacity: 1;
+  stroke: white;
   stroke-width: 4;
+  fill: green;
 }
 
 .text {
@@ -24,6 +28,7 @@
   font-size: 4rem;
   line-height: 4rem;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  cursor: default;
 }
 
 @keyframes fadeIn {

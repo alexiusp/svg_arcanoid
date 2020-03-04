@@ -20,7 +20,7 @@ const Root: React.FC = () => (
         <Caret />
         <ScoresLayer />
         <MainMenu />
-        <Message onClose={() => null}>TEST</Message>
+        <Message />
       </svg>
     </div>
 );

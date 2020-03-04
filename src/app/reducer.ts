@@ -6,6 +6,7 @@ export interface IFeatureState {
   hiscores: number[];
   gameOver: boolean;
   position: number;
+  message: string;
 }
 
 export const initialState: IFeatureState = {
@@ -14,6 +15,7 @@ export const initialState: IFeatureState = {
   hiscores: [],
   gameOver: false,
   position: 0,
+  message: '',
 };
 
 export const statePropName = 'app';
@@ -45,6 +47,19 @@ export default function appReducer(state: IFeatureState = initialState, action: 
         gameOver: true,
         hiscores,
         position,
+      };
+    }
+    case ActionTypes.APP_MESSAGE: {
+      const { message } = action;
+      return {
+        ...state,
+        message,
+      };
+    }
+    case ActionTypes.APP_MESSAGE_CLEAR: {
+      return {
+        ...state,
+        message: '',
       };
     }
     default:

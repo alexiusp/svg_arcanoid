@@ -19,4 +19,6 @@ export const getHiscores = (state: IState) => getAppState(state).hiscores;
 
 export const getPlayerPosition = (state: IState) => getAppState(state).position;
 
+export const getMessage = (state: IState) => getAppState(state).message;
+
 export const getStateToSave = (state: IState) => JSON.stringify(state);

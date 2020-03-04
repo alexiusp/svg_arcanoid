@@ -1,4 +1,4 @@
-import { all, cancel, delay, fork, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, cancel, delay, fork, put, race, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import { Actions as BallsActions } from '../balls';
 import { Actions as BricksActions, ActionTypes as BricksActionTypes } from '../bricks';
@@ -27,10 +27,21 @@ function* startGameSaga() {
   // add one initial ball
   yield put(BallsActions.initBallAction());
   yield put(Actions.appStartedAction());
+  // show message
+  yield put(Actions.messageAction('Get ready!'));
+  const { timeout } = yield race({
+    timeout: delay(2000),
+    close: take(ActionTypes.APP_MESSAGE_CLEAR),
+  });
+  if (timeout) {
+    yield put(Actions.clearMessageAction());
+  }
   // start cycle
   const gameCycle = yield fork(gameCycleSaga);
   yield take(ActionTypes.APP_GAME_OVER);
   yield cancel(gameCycle);
+  yield put(Actions.messageAction('Game Over!'));
+  yield take(ActionTypes.APP_MESSAGE_CLEAR);
   yield fork(calculateHiScores);
 }
 
