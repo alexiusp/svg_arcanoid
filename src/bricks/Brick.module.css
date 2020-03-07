@@ -1,16 +1,20 @@
 .brick {
   stroke-width: 1;
-  stroke: white;
+  stroke: silver;
 }
-.brick-1 {
+.single {
   fill: khaki;
 }
-.brick-2 {
+.double {
   fill: lightcoral;
 }
-.brick-3 {
+.triple {
   fill: maroon;
 }
-.brick-4 {
+.quadruple {
   fill: purple;
+}
+.dynamite {
+  fill: crimson;
+  stroke: gold;
 }

@@ -1,15 +1,15 @@
-import { all, call, put, /*select, takeLatest,*/ takeEvery } from 'redux-saga/effects';
-// import { VIEW_WIDTH, VIEW_HEIGHT } from '../constants';
+import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
-import { IBrickModel } from './types';
+import buildBrick from './bricksFactory';
 import { BRICK_WIDTH, BRICK_HEIGHT, BRICKS_TOP_MARGIN } from './constants';
+import * as Selectors from './selectors';
 
 const level0 = [
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-  [1, 1, 1, 1, 4, 4, 1, 1, 1, 1],
-  [1, 1, 1, 3, 3, 3, 3, 1, 1, 1],
-  [0, 2, 2, 2, 2, 2, 2, 2, 2, 0],
+  [1, 1, 5, 1, 4, 4, 1, 5, 1, 1],
+  [1, 2, 2, 2, 3, 3, 2, 2, 2, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
 ];
 
 function* initBricksSaga({ level }: ActionTypes.IInitBricksAction) {
@@ -18,23 +18,24 @@ function* initBricksSaga({ level }: ActionTypes.IInitBricksAction) {
   for (let rowIndex = 0; rowIndex < level0.length; rowIndex++) {
     const row = level0[rowIndex];
     for (let colIndex = 0; colIndex < row.length; colIndex++) {
-      const health = row[colIndex];
-      if (health > 0) {
-        const brick: IBrickModel = {
-          health,
-          x: colIndex * BRICK_WIDTH,
-          y: rowIndex * BRICK_HEIGHT + BRICKS_TOP_MARGIN,
-          height: BRICK_HEIGHT,
-          width: BRICK_WIDTH,
-        };
+      const brickType = row[colIndex];
+      if (brickType > 0) {
+        const x = colIndex * BRICK_WIDTH;
+        const y = rowIndex * BRICK_HEIGHT + BRICKS_TOP_MARGIN;
+        const brick = buildBrick(brickType, x, y);
         yield put(Actions.addBrickAction(brick));
       }
     }
   }
 }
 
+function* handleBrickHitSaga({ index }: ActionTypes.IHitBrickAction) {
+  const brick = yield select(Selectors.getBrick, index);
+}
+
 export default function* featureSaga() {
   yield all([
     takeEvery(ActionTypes.BRICKS_INIT, initBricksSaga),
+    takeEvery(ActionTypes.BRICK_HIT, handleBrickHitSaga),
   ]);
 }

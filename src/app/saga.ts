@@ -20,6 +20,8 @@ function* gameCycleSaga() {
 }
 
 function* startGameSaga() {
+  // initialize first bricks level
+  yield put(BricksActions.initBricksAction(1));
   // reset caret position and speed
   yield put(CaretActions.resetAction());
   // clean up balls
