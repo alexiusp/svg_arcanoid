@@ -1,4 +1,4 @@
-import { all, call, put, select, takeEvery } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import * as ActionTypes from './actionTypes';
 import * as Actions from './actions';
 import buildBrick from './bricksFactory';
@@ -31,7 +31,7 @@ function* initBricksSaga({ level }: ActionTypes.IInitBricksAction) {
 }
 
 function* updateBrick(index: number, brick: IBrickModel) {
-  if (brick.health <= 0) {
+  if (brick.health < 0) {
     yield put(Actions.removeBrickAction(index));
   } else {
     yield put(Actions.updateBrickAction(index, brick));
@@ -68,25 +68,21 @@ function* handleBrickHitSaga({ index }: ActionTypes.IHitBrickAction) {
       const {x, y, width, height} = brick;
       // hit left
       let neighbor = yield select(Selectors.findNeighborIndex, x - width, y);
-      yield console.log('left', neighbor);
       if (neighbor >= 0) {
         yield put(Actions.hitBrickAction(neighbor));
       }
       // hit right
       neighbor = yield select(Selectors.findNeighborIndex, x + width, y);
-      yield console.log('right', neighbor);
       if (neighbor >= 0) {
         yield put(Actions.hitBrickAction(neighbor));
       }
       // hit top
       neighbor = yield select(Selectors.findNeighborIndex, x, y - height);
-      yield console.log('top', neighbor);
       if (neighbor >= 0) {
         yield put(Actions.hitBrickAction(neighbor));
       }
       // hit bottom
       neighbor = yield select(Selectors.findNeighborIndex, x, y + height);
-      yield console.log('bottom', neighbor);
       if (neighbor >= 0) {
         yield put(Actions.hitBrickAction(neighbor));
       }
@@ -98,9 +94,34 @@ function* handleBrickHitSaga({ index }: ActionTypes.IHitBrickAction) {
   yield call(updateBrick, index, updatedBrick);
 }
 
+function* updateBricksSaga() {
+  const bricks: (IBrickModel | null)[] = yield select(Selectors.getBricks);
+  for (let index = 0; index < bricks.length; index++) {
+    const brick = bricks[index];
+    // if there is no brick or brick is still alive - skip
+    if (!brick || brick.health > 0) {
+      continue;
+    }
+    let updatedBrick = {
+      ...brick,
+    };
+    // if brick is just got destroyed - apply animation state
+    // TODO: make animation state a standalone property instead of type monkeypatching
+    if (brick.type !== EBrickType.Dead) {
+      updatedBrick.type = EBrickType.Dead;
+      updatedBrick.health -= 1;
+      yield put(Actions.updateBrickAction(index, updatedBrick));
+      continue;
+    }
+    // remove brick if it was animated
+    yield put(Actions.removeBrickAction(index));
+  }
+}
+
 export default function* featureSaga() {
   yield all([
     takeEvery(ActionTypes.BRICKS_INIT, initBricksSaga),
     takeEvery(ActionTypes.BRICK_HIT, handleBrickHitSaga),
+    takeLatest(ActionTypes.BRICKS_UPDATE, updateBricksSaga),
   ]);
 }

@@ -37,4 +37,16 @@ export interface IRemoveBrickAction extends Action<BRICK_REMOVE> {
   index: number;
 }
 
-export type IActions = IInitBricksAction | IAddBrickAction | IHitBrickAction | IUpdateBrickAction | IRemoveBrickAction;
+export const BRICKS_UPDATE = 'BRICKS_UPDATE';
+export type BRICKS_UPDATE = typeof BRICKS_UPDATE;
+export interface IUpdateBricksAction extends Action<BRICKS_UPDATE> {
+  type: BRICKS_UPDATE;
+}
+
+export type IActions =
+  | IInitBricksAction
+  | IAddBrickAction
+  | IHitBrickAction
+  | IUpdateBrickAction
+  | IRemoveBrickAction
+  | IUpdateBricksAction;

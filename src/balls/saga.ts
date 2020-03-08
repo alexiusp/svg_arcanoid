@@ -1,7 +1,7 @@
 import { all, call, put, select, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import { ICaretModel } from '../caret/types';
-import { IRect } from '../types';
+import { IDestructibleRect, IRect } from '../types';
 import { Actions as AppActions } from '../app';
 import { Actions as BricksActions, Selectors as BricksSelectors } from '../bricks';
 import { Selectors as CaretSelectors } from '../caret';
@@ -165,11 +165,11 @@ function* updateBallsSaga() {
     };
     // check for collision with bricks
     // TODO: optimise check by reducing set of bricks under test
-    const bricks: (IRect | null)[] = yield select(BricksSelectors.getBricks);
+    const bricks: (IDestructibleRect | null)[] = yield select(BricksSelectors.getBricks);
     let brickCollision = ERectCollision.None;
     for (let brickIndex = 0; brickIndex < bricks.length; brickIndex++) {
       const brick = bricks[brickIndex];
-      if (!brick) {
+      if (!brick || brick.health === 0) {
         continue;
       }
       brickCollision = getCollision(newBall, brick);

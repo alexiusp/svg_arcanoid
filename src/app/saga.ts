@@ -10,10 +10,17 @@ import * as Selectors from './selectors';
 
 const GAME_TICK = 100;
 
+export function getDelta(timestamp: number) {
+  return Date.now() - timestamp;
+}
+
 function* gameCycleSaga() {
   while (true) {
+    // update bricks state
+    yield put(BricksActions.updateBricksAction());
     // update caret position
     yield put(CaretActions.updateAction());
+    // update balls position
     yield put(BallsActions.updateAction());
     yield delay(GAME_TICK);
   }

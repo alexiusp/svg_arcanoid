@@ -1,12 +1,12 @@
-import { IRect } from '../types';
+import { IDestructibleRect } from '../types';
 
-export interface IBrickModel extends IRect {
+export interface IBrickModel extends IDestructibleRect {
   type: EBrickType;
-  health: number;
   color: string;
 }
 
 export enum EBrickType {
+  Dead = 0,
   Single = 1,
   Double = 2,
   Triple = 3,

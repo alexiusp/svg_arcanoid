@@ -1,6 +1,11 @@
 .brick {
   stroke-width: 1;
   stroke: silver;
+  opacity: 1;
+  transition: fill ease 300ms;
+}
+.dead {
+  animation: fade-out 300ms;
 }
 .single {
   fill: khaki;
@@ -17,4 +22,9 @@
 .dynamite {
   fill: crimson;
   stroke: gold;
+}
+
+@keyframes fade-out {
+  0% {opacity: 1}
+  100% {opacity: 0}
 }
