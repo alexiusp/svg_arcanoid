@@ -2,7 +2,7 @@ import * as ActionTypes from './actionTypes';
 import { IBrickModel } from './types';
 
 export interface IFeatureState {
-  bricks: IBrickModel[];
+  bricks: (IBrickModel | null)[];
   level: number;
 }
 
@@ -47,8 +47,11 @@ export default function reducer(
     }
     case ActionTypes.BRICK_REMOVE: {
       const index = action.index;
-      const bricks = [...state.bricks];
-      bricks.splice(index, 1);
+      const bricks = [
+        ...state.bricks.slice(0, index),
+        null,
+        ...state.bricks.slice(index + 1),
+      ];
       return {
         ...state,
         bricks,

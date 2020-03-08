@@ -165,10 +165,13 @@ function* updateBallsSaga() {
     };
     // check for collision with bricks
     // TODO: optimise check by reducing set of bricks under test
-    const bricks: IRect[] = yield select(BricksSelectors.getBricks);
+    const bricks: (IRect | null)[] = yield select(BricksSelectors.getBricks);
     let brickCollision = ERectCollision.None;
     for (let brickIndex = 0; brickIndex < bricks.length; brickIndex++) {
       const brick = bricks[brickIndex];
+      if (!brick) {
+        continue;
+      }
       brickCollision = getCollision(newBall, brick);
       if (brickCollision === ERectCollision.None) {
         // no collision - skip calculations

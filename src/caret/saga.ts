@@ -50,7 +50,10 @@ function* updateCaretSaga() {
     speed = 0;
     yield put(Actions.updateSpeedAction(speed));
   }
-  yield put(Actions.updatePositionAction(x));
+  if (x !== oldXPos) {
+    // only update if position changes
+    yield put(Actions.updatePositionAction(x));
+  }
 }
 
 export default function* watchCaret() {

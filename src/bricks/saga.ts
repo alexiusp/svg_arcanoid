@@ -8,9 +8,9 @@ import { IBrickModel, EBrickType } from './types';
 
 const level0 = [
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-  [1, 1, 5, 1, 4, 4, 1, 5, 1, 1],
-  [1, 2, 2, 2, 3, 3, 2, 2, 2, 1],
-  [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 3, 1, 4, 4, 1, 3, 1, 1],
+  [1, 2, 5, 2, 3, 3, 2, 5, 2, 1],
+  [0, 1, 1, 1, 5, 5, 1, 1, 1, 0],
 ];
 
 function* initBricksSaga({ level }: ActionTypes.IInitBricksAction) {
@@ -30,9 +30,20 @@ function* initBricksSaga({ level }: ActionTypes.IInitBricksAction) {
   }
 }
 
+function* updateBrick(index: number, brick: IBrickModel) {
+  if (brick.health <= 0) {
+    yield put(Actions.removeBrickAction(index));
+  } else {
+    yield put(Actions.updateBrickAction(index, brick));
+  }
+}
+
 function* handleBrickHitSaga({ index }: ActionTypes.IHitBrickAction) {
-  const brick = yield select(Selectors.getBrick, index);
+  const brick: IBrickModel | null = yield select(Selectors.getBrick, index);
   yield console.log('brick hit', index, brick);
+  if (!brick) {
+    return;
+  }
   // decrease health
   const updatedBrick: IBrickModel = {
     ...brick,
@@ -40,17 +51,51 @@ function* handleBrickHitSaga({ index }: ActionTypes.IHitBrickAction) {
   };
   // do type related transformations
   switch (updatedBrick.type) {
-    case EBrickType.Dynamite:
-      // TODO: make explosion
+    case EBrickType.Quadruple:
+      updatedBrick.type = EBrickType.Triple;
+      updatedBrick.color = 'triple';
       break;
+    case EBrickType.Triple:
+      updatedBrick.type = EBrickType.Double;
+      updatedBrick.color = 'double';
+      break;
+    case EBrickType.Double:
+      updatedBrick.type = EBrickType.Single;
+      updatedBrick.color = 'single';
+      break;
+    case EBrickType.Dynamite: {
+      // explode
+      const {x, y, width, height} = brick;
+      // hit left
+      let neighbor = yield select(Selectors.findNeighborIndex, x - width, y);
+      yield console.log('left', neighbor);
+      if (neighbor >= 0) {
+        yield put(Actions.hitBrickAction(neighbor));
+      }
+      // hit right
+      neighbor = yield select(Selectors.findNeighborIndex, x + width, y);
+      yield console.log('right', neighbor);
+      if (neighbor >= 0) {
+        yield put(Actions.hitBrickAction(neighbor));
+      }
+      // hit top
+      neighbor = yield select(Selectors.findNeighborIndex, x, y - height);
+      yield console.log('top', neighbor);
+      if (neighbor >= 0) {
+        yield put(Actions.hitBrickAction(neighbor));
+      }
+      // hit bottom
+      neighbor = yield select(Selectors.findNeighborIndex, x, y + height);
+      yield console.log('bottom', neighbor);
+      if (neighbor >= 0) {
+        yield put(Actions.hitBrickAction(neighbor));
+      }
+      break;
+    }
     default:
       break;
   }
-  if (updatedBrick.health <= 0) {
-    yield put(Actions.removeBrickAction(index));
-  } else {
-    yield put(Actions.updateBrickAction(index, updatedBrick));
-  }
+  yield call(updateBrick, index, updatedBrick);
 }
 
 export default function* featureSaga() {

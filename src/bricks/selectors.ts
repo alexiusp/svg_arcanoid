@@ -13,6 +13,11 @@ export const getLevel = (state: IState) => getFeatureState(state).level;
 
 export const getBricks = (state: IState) => getFeatureState(state).bricks;
 
-export const getAmountOfBricks = (state: IState) => getBricks(state).length;
+// const getAmountOfBricks = (state: IState) => getBricks(state).length;
 
 export const getBrick = (state: IState, index: number) => getBricks(state)[index];
+
+export const findNeighborIndex = (state: IState, x: number, y: number) => {
+  const bricks = getBricks(state);
+  return bricks.findIndex((b) => (!!b && b.x === x && b.y === y));
+}

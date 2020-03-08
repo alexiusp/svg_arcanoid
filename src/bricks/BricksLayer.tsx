@@ -7,24 +7,18 @@ import * as Selectors from './selectors';
 import { IBrickModel } from './types';
 
 export interface IBricksLayerProps {
-  bricks: IBrickModel[];
+  bricks: (IBrickModel | null)[];
 }
 
 const BricksLayer: React.FC<IBricksLayerProps> = ({ bricks }) => {
-  return (
-    <g>
-      {bricks.map((brick, index) => (
-        <Brick key={index} {...brick} />
-      ))}
-    </g>
-  );
-}
+  return <g>{bricks.map((brick, index) => brick && <Brick key={index} {...brick} />)}</g>;
+};
 
 export const mapStateToProps = (state: RootState) => {
   const bricks = Selectors.getBricks(state);
   return {
     bricks,
   };
-}
+};
 
 export default connect(mapStateToProps)(BricksLayer);
