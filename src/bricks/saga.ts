@@ -4,6 +4,7 @@ import * as Actions from './actions';
 import buildBrick from './bricksFactory';
 import { BRICK_WIDTH, BRICK_HEIGHT, BRICKS_TOP_MARGIN } from './constants';
 import * as Selectors from './selectors';
+import { IBrickModel, EBrickType } from './types';
 
 const level0 = [
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -31,6 +32,25 @@ function* initBricksSaga({ level }: ActionTypes.IInitBricksAction) {
 
 function* handleBrickHitSaga({ index }: ActionTypes.IHitBrickAction) {
   const brick = yield select(Selectors.getBrick, index);
+  yield console.log('brick hit', index, brick);
+  // decrease health
+  const updatedBrick: IBrickModel = {
+    ...brick,
+    health: brick.health - 1,
+  };
+  // do type related transformations
+  switch (updatedBrick.type) {
+    case EBrickType.Dynamite:
+      // TODO: make explosion
+      break;
+    default:
+      break;
+  }
+  if (updatedBrick.health <= 0) {
+    yield put(Actions.removeBrickAction(index));
+  } else {
+    yield put(Actions.updateBrickAction(index, updatedBrick));
+  }
 }
 
 export default function* featureSaga() {

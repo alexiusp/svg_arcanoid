@@ -33,20 +33,26 @@ export default function reducer(
         bricks,
       };
     }
-    case ActionTypes.BRICK_HIT: {
-      const index = action.index;
-      const bricks = [...state.bricks];
-      const brick = bricks[index];
-      brick.health -= 1;
-      if (brick.health < 1) {
-        bricks.splice(index, 1);
-      } else {
-        bricks[index] = brick;
-      }
+    case ActionTypes.BRICK_UPDATE: {
+      const { index, brick } = action;
+      const bricks = [
+        ...state.bricks.slice(0, index),
+        brick,
+        ...state.bricks.slice(index + 1),
+      ];
       return {
         ...state,
         bricks,
-      }
+      };
+    }
+    case ActionTypes.BRICK_REMOVE: {
+      const index = action.index;
+      const bricks = [...state.bricks];
+      bricks.splice(index, 1);
+      return {
+        ...state,
+        bricks,
+      };
     }
     default:
       return state;

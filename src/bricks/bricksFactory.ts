@@ -9,6 +9,7 @@ import { BRICK_WIDTH, BRICK_HEIGHT } from './constants';
  */
 export default function buildBrick(type: EBrickType, x: number, y: number) {
   const brick: IBrickModel = {
+    type,
     health: 1,
     x,
     y,

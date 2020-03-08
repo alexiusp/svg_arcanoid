@@ -17,3 +17,14 @@ export const hitBrickAction: ActionCreator<ActionTypes.IHitBrickAction> = (index
   type: ActionTypes.BRICK_HIT,
   index,
 });
+
+export const updateBrickAction: ActionCreator<ActionTypes.IUpdateBrickAction> = (index: number, brick: IBrickModel) => ({
+  type: ActionTypes.BRICK_UPDATE,
+  index,
+  brick,
+});
+
+export const removeBrickAction: ActionCreator<ActionTypes.IRemoveBrickAction> = (index: number) => ({
+  type: ActionTypes.BRICK_REMOVE,
+  index,
+});

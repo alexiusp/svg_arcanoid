@@ -1,6 +1,7 @@
 import { IRect } from '../types';
 
 export interface IBrickModel extends IRect {
+  type: EBrickType;
   health: number;
   color: string;
 }

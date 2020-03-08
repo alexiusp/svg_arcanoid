@@ -22,4 +22,19 @@ export interface IHitBrickAction extends Action<BRICK_HIT> {
   index: number;
 }
 
-export type IActions = IInitBricksAction | IAddBrickAction | IHitBrickAction;
+export const BRICK_UPDATE = 'BRICK_UPDATE';
+export type BRICK_UPDATE = typeof BRICK_UPDATE;
+export interface IUpdateBrickAction extends Action<BRICK_UPDATE> {
+  type: BRICK_UPDATE;
+  index: number;
+  brick: IBrickModel;
+}
+
+export const BRICK_REMOVE = 'BRICK_REMOVE';
+export type BRICK_REMOVE = typeof BRICK_REMOVE;
+export interface IRemoveBrickAction extends Action<BRICK_REMOVE> {
+  type: BRICK_REMOVE;
+  index: number;
+}
+
+export type IActions = IInitBricksAction | IAddBrickAction | IHitBrickAction | IUpdateBrickAction | IRemoveBrickAction;
